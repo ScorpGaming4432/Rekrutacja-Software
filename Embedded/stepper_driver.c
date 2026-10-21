@@ -7,6 +7,7 @@ TIM_HandleTypeDef htim2;
 
 void stepper_init(void)
 {
+    // TODO All timing should depend on SystemClock_Config that's literally what's it's for
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     __HAL_RCC_GPIOB_CLK_ENABLE();
