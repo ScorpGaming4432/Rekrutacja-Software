@@ -56,7 +56,20 @@ void stepper_move(MotorDirection dir, uint32_t steps)
             HAL_GPIO_WritePin(STEP_DIR_GPIO_Port, STEP_DIR_Pin, GPIO_PIN_RESET);
         }
 
-        steps_to_move = steps * 2; // will overflow
+        /*
+        # Teoretycznie:
+        ` HAL_GPIO_WritePin(STEP_DIR_GPIO_Port, STEP_DIR_Pin, dir); ` zamiast tego if(dir==DIR_RIGHT){...} calego
+            dir_right    to 1, dir_left       to 0
+            GPIO_PIN_SET to 1, GPIO_PIN_RESET to 0
+
+        można by bylo skipnac ifa i jakos minimalnie szybciej by mogło byc
+
+        Wiadomo że jesli dodamy wiecej w przyszlosci to bedzie chujowo, ale daloby sie z tym pracowac jesli sie pobawimy troche pinami
+        nie bede dawac perf(move->direction) bo to zbyt malo żeby cos nam dalo, wiec bez sensu cokolwiek zmieniac
+        */
+
+        steps_to_move = steps * 2; //! probs will overflow unless i don't know what i'm saying
+        // cuz it's only increasing right
         move_active = true;
 
         if (HAL_TIM_Base_Start_IT(&htim2))
