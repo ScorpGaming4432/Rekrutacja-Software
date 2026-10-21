@@ -1,6 +1,10 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
+
 #include "stm32f4xx_hal.h"
 
 #define STEP_DIR_GPIO_Port  GPIOB
