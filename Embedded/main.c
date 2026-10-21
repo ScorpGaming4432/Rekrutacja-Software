@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define MOTOR_INIT_PRINT "Motor initialized, press button to move.\r\n"
+#define MOTOR_INIT_PRINT    "Motor initialized, press button to move.\r\n"
 #define UART_TX_BUFFER_SIZE sizeof(MOTOR_INIT_PRINT)
 
 volatile bool button_pressed = false;
@@ -14,7 +14,7 @@ UART_HandleTypeDef huart4;
 
 void SystemClock_Config(void)
 {
-    //TODO not implemented
+    // TODO not implemented
 }
 
 void Error_Handler()
