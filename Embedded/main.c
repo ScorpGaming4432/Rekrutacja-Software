@@ -10,6 +10,10 @@ UART_HandleTypeDef huart4;
 #define UART_TX_BUFFER_SIZE 16
 char tx_buffer[UART_TX_BUFFER_SIZE];
 
+void Error_Handler() {
+    for(;;); // chyba że printf("\a"); a potem loop
+}
+
 void uart_init(void)
 {
     huart4.Instance = UART4;
