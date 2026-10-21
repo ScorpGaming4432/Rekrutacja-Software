@@ -27,7 +27,8 @@ void stepper_init(void)
     htim2.Init.Prescaler = 84 - 1;
     htim2.Init.Period = 1000 - 1;
     htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-    HAL_TIM_Base_Init(&htim2);
+    if (HAL_TIM_Base_Init(&htim2))
+        Error_Handler();
 
     HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TIM2_IRQn);
@@ -46,9 +47,9 @@ void stepper_move(MotorDirection dir, uint32_t steps)
             HAL_GPIO_WritePin(STEP_DIR_GPIO_Port, STEP_DIR_Pin, GPIO_PIN_RESET);
         }
 
-        steps_to_move = steps * 2;
+        steps_to_move = steps * 2; // will overflow
 
-        HAL_TIM_Base_Start_IT(&htim2);
+        if (HAL_TIM_Base_Start_IT(&htim2)) Error_Handler(); 
 
         button_pressed = false;
     }
