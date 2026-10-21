@@ -12,4 +12,4 @@ void stepper_init(void);
 
 void stepper_move(MotorDirection dir, uint32_t steps);
 
-#endif // !STEPPER_DRIVER_H
+#endif // STEPPER_DRIVER_H

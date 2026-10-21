@@ -16,9 +16,9 @@
 #define USER_BUTTON_GPIO_Port GPIOA
 #define USER_BUTTON_Pin       GPIO_PIN_0
 
+extern volatile bool button_pressed;
 
 void SystemClock_Config(void);
-
 void Error_Handler();
 
 #endif // !MAIN_H
