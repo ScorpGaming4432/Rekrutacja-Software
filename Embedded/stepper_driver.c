@@ -1,6 +1,7 @@
 #include "stepper_driver.h"
 
 static volatile uint32_t steps_to_move = 0;
+static volatile bool move_active = false;
 
 TIM_HandleTypeDef htim2;
 
@@ -38,6 +39,13 @@ void stepper_move(MotorDirection dir, uint32_t steps)
 {
     if (button_pressed)
     {
+        button_pressed = false;
+
+        if (move_active)
+        {
+            return;
+        }
+
         if (dir == DIR_RIGHT)
         {
             HAL_GPIO_WritePin(STEP_DIR_GPIO_Port, STEP_DIR_Pin, GPIO_PIN_SET);
@@ -48,10 +56,13 @@ void stepper_move(MotorDirection dir, uint32_t steps)
         }
 
         steps_to_move = steps * 2; // will overflow
+        move_active = true;
 
-        if (HAL_TIM_Base_Start_IT(&htim2)) Error_Handler(); 
-
-        button_pressed = false;
+        if (HAL_TIM_Base_Start_IT(&htim2))
+        {
+            move_active = false;
+            Error_Handler();
+        }
     }
 }
 
@@ -69,6 +80,7 @@ void TIM2_IRQHandler(void)
 
             HAL_GPIO_WritePin(STEP_PULSE_GPIO_Port, STEP_PULSE_Pin, GPIO_PIN_RESET);
             HAL_TIM_Base_Stop_IT(&htim2);
+            move_active = false;
         }
     }
 
